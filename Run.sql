@@ -33,3 +33,6 @@ source Jeremy/insertGEazyAlbumsSongs.sql
 
 /* Opens the .sql file that adds songs and albums by Casey Veggies. */
 source Jeremy/insertCaseyVeggiesAlbumsSongs.sql
+
+source Austin/austinInsertMusicData.sql
+Source Austin/austinSongLyrics.sql
