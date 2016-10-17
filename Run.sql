@@ -16,22 +16,20 @@ source CreateMusicTables.sql
    It also removes any data in that is in any of the tables. */
 source insertFirst.sql
 
-
 /* Opens the .sql file that adds songs and albums by childish gambino. */
-source insertChildishGambinoAlbumsSongs.sql
+source Jeremy/insertChildishGambinoAlbumsSongs.sql
 
 /* Opens the .sql file that adds all of the lyrics for songs by childish gambino. */
-source insertChildishGambinoLyrics.sql
-
+source Jeremy/insertChildishGambinoLyrics.sql
 
 /* Opens the .sql file that adds songs and albums by Watsky. */
-source insertWatskyAlbumsSongs.sql
+source Jeremy/insertWatskyAlbumsSongs.sql
 
 /* Opens the .sql file that adds songs and albums by Logic. */
-source insertLogicAlbumsSongs.sql
+source Jeremy/insertLogicAlbumsSongs.sql
 
 /* Opens the .sql file that adds songs and albums by G-Eazy. */
-source insertGEazyAlbumsSongs.sql
+source Jeremy/insertGEazyAlbumsSongs.sql
 
 /* Opens the .sql file that adds songs and albums by Casey Veggies. */
-source insertCaseyVeggiesAlbumsSongs.sql
+source Jeremy/insertCaseyVeggiesAlbumsSongs.sql
