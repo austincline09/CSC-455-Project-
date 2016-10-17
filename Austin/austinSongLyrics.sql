@@ -349,7 +349,7 @@ Know death is near
 No remorse");
 
 insert into lyrics values
-	(2008, 2009, "We are scanning the scene
+	(2008, 2008, "We are scanning the scene
 in the city tonight
 We are looking for you
 to start up a fight
