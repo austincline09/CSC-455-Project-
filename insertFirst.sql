@@ -66,6 +66,12 @@ insert into awards values
 /* Inserting into the artists table */
 /* (Artist_ID, artistName) */
 
+insert into artists values 
+	(2000, 'Metallica');
+insert into artists values
+	(2001, 'August Burns Red'); 
+insert into artists values
+	(2002, 'Killswitch Engage');
 insert into artists values
 	(3000, 'Childish Gambino');
 insert into artists values
