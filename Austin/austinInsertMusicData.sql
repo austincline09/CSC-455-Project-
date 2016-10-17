@@ -7,7 +7,7 @@ insert into albums values
 insert into albums values
 	(2001, 'Constellations', '000:47:00', '2009-07-14', 5, 2001); 
 insert into albums values
-	(2002, 'As Daylight Dies', '000:58:00', '2006-07-14', 5, 2002; 
+	(2002, 'As Daylight Dies', '000:58:00', '2006-07-14', 5, 2002); 
 
 
 /* Inserting into the song table EXAMPLE */
