@@ -1,0 +1,24 @@
+needtodo
+-------------
+
+Watsky
+- song award information
+- lyrics
+
+Logic
+- album award information
+- song award information
+- song single dates
+- lyrics
+
+G-Eazy
+- album award information
+- song award information
+- song single dates
+- lyrics
+
+Casey Veggies
+- album award information
+- song award information
+- song single dates
+- lyrics
