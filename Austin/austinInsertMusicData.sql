@@ -1,12 +1,5 @@
 /* Insert Music Data */
 
-insert into artists values 
-	(2000, 'Metallica');
-insert into artists values
-	(2001, 'August Burns Red'); 
-insert into artists values
-	(2002, 'Killswitch Engage');
-
 /* Inserting into the album table EXAMPLE */
 /* (Album_ID, albumName, albumLength HHH:MM:SS, released YYYY-MM-DD, genreID, artistID, awardID) */
 insert into albums values 
