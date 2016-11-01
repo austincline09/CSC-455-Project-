@@ -36,3 +36,4 @@ source Jeremy/insertCaseyVeggiesAlbumsSongs.sql
 
 source Austin/austinInsertMusicData.sql
 Source Austin/austinSongLyrics.sql
+source Kennon/folkinsert.sql
