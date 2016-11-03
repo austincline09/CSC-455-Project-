@@ -1,11 +1,14 @@
 /*  
 	Created by Jeremy Timothy Brown
 	Version 2.5
-	Last Update 10/13/2016 03:32PM EST
+	Last Update 11/02/2016 12:23PM EST
 */
 
 
 /*If the following tables exist, remove them from the database*/
+DROP TABLE IF EXISTS currentSearch;
+DROP TABLE IF EXISTS savedsongs;
+DROP TABLE IF EXISTS savedalbums;
 DROP TABLE IF EXISTS members;
 DROP TABLE IF EXISTS lyrics;
 DROP TABLE IF EXISTS albumAwards;
@@ -18,16 +21,46 @@ DROP TABLE IF EXISTS genres;
 
 
 /* This table will hold member data after a user has entered a user name and a password if desired.
-When a user is added to this table, a new table will be created for that will be used to hold any
-song this user favorites.  If the user is removed from this table, the song table that was created
-for them must be removed. 
-This table's only child is the table it will create to hold the favorite songs of the user. */
+This table's children are savedsongs and savedalbums, which hold the songs andd albums that a specific user saved */
 CREATE TABLE members(
 	User_Name				VARCHAR(50) NOT NULL,						/* Primary Key. can be up to 50 characters.  cannot be null. */
 	Password				VARCHAR(50) NOT NULL DEFAULT 'password',	/* can be up to 50 characters.  cannot be null, although is set to 'password' when it is deleted */
 	PRIMARY KEY (User_Name)										
 	)ENGINE = INNODB;
+
+/* This table will hold every song saved by a specific user.
+This table is a child to songs and members */
+CREATE TABLE savedsongs(
+	User_Name				VARCHAR(50) NOT NULL,						/* Foreign Key. can be up to 50 characters.  cannot be null. */
+	Song_ID					SMALLINT UNSIGNED NOT NULL,					/* Foreign Key. can be any integer >= 0, but less than 65535. can not be null.*/
+	PRIMARY KEY (User_Name, Song_ID),
+	FOREIGN KEY (UserName) REFERENCES members (User_Name)				/* Checks if the User_Name is in the members table */
+		ON DELETE CASCADE												/* If removed in parent table, remove in this table.  every proceeding ON DELETE CASCADE does the same thing  */
+		ON UPDATE CASCADE,
+	FOREIGN KEY (Song_ID) REFERENCES songs (SONG_ID)					/* Checks if the song ID is in the songs table */
+		ON DELETE CASCADE												/* If removed in parent table, remove in this table.  every proceeding ON DELETE CASCADE does the same thing  */
+		ON UPDATE CASCADE,
+	)ENGINE=INNODB;
+
+/* This table will hold every album saved by a specific user.
+This table is a child to albums and members */
+CREATE TABLE savedalbums(
+	User_Name				VARCHAR(50) NOT NULL,						/* Foreign Key. can be up to 50 characters.  cannot be null. */
+	Album_ID				SMALLINT UNSIGNED NOT NULL,					/* Foreign Key. can be any integer >= 0, but less than 65535. can not be null.*/
+	PRIMARY KEY (User_Name, Album_ID),
+	FOREIGN KEY (UserName) REFERENCES members (User_Name)				/* Checks if the User_Name is in the members table */
+		ON DELETE CASCADE												/* If removed in parent table, remove in this table.  every proceeding ON DELETE CASCADE does the same thing  */
+		ON UPDATE CASCADE,
+	FOREIGN KEY (Album_ID) REFERENCES album (Album_ID)					/* Checks if the album ID is in the album table */
+		ON DELETE CASCADE												/* If removed in parent table, remove in this table.  every proceeding ON DELETE CASCADE does the same thing  */
+		ON UPDATE CASCADE,
+	)ENGINE=INNODB;
 	
+
+CREATE TABLE currentSearch(
+	ID						SMALLINT UNSIGNED NOT NULL,
+	PRIMARY KEY (ID)
+	)ENGINE=INNODB;
 
 	
 /* This table holds every genre name that is associated with an album or a song.
