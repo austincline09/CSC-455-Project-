@@ -10,12 +10,12 @@ DROP VIEW IF EXISTS all_users;
 
 
 CREATE VIEW all_songs AS
-	SELECT Song_Name
-	FROM songs;
+	SELECT Song_Name, Artist_Name
+	FROM songs NATURAL JOIN artists;
 	
 CREATE VIEW all_albums AS
-	SELECT Album_Name
-	FROM albums;
+	SELECT Album_Name, Artist_Name
+	FROM albums NATURAL JOIN artists;
 	
 CREATE VIEW all_users AS
 	SELECT User_Name
