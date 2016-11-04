@@ -11,6 +11,9 @@
 /* Opens the .sql file that contains all of the code to create our tables. */
 source CreateMusicTables.sql
 
+/* Opens the .sql file that contains all of the code to create our views. */
+source views.sql
+
 /* Opens the .sql file that contains the code that adds
    our members, songs, awards, artists, and genres. 
    It also removes any data in that is in any of the tables. */
@@ -35,5 +38,5 @@ source Jeremy/insertGEazyAlbumsSongs.sql
 source Jeremy/insertCaseyVeggiesAlbumsSongs.sql
 
 source Austin/austinInsertMusicData.sql
-Source Austin/austinSongLyrics.sql
+source Austin/austinSongLyrics.sql
 source Kennon/folkinsert.sql
