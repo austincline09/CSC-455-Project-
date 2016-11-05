@@ -4,6 +4,9 @@
     <div class="container-fluid text-left">
         <div class="row content">
             <div class="col-sm-2 sidenav">
+                <h3>Filters</h3>
+                <br>
+                    <h4>Genres</h4>
                 <form role="form" action="/filter" method="POST">
                     {% for genre in range(genres|length) %}
                     <div class="radio">
@@ -26,10 +29,10 @@
                     <h4>Song Contains Word(s)</h4>
                     <input type="text" class="form-control" placeholder="Enter lyric" id="songLyric" name="songLyric">
                     {% endif %}
+                    <br>
                      <button type="submit" id="lyric_filter" class="btn btn-default">Filter!</button>
+                    <hr>
                 </form>
-                    <br>
-                    <br>
             </div>
             <div class="col-sm-8 text-left">
                 <h3>You searched for {{ third }} in {{ first }} {{ second }}</h3>

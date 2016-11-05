@@ -18,40 +18,54 @@ import login_db
 # creates the application
 app = Flask(__name__)
 
-
-# the first route, this function renders that main page
+"""
+This function routes the to the base url, hosted by the local server.
+When called, it renders the main page which allows the user to select if they
+want to choose to search for a song or an album.
+"""
 @app.route('/')
 def search_one():
     return render_template('searchFirst.html')
 
 
-# this function renders the about page
+"""
+This function routes the to the about url, hosted by the local server.
+When called, it renders the about page.
+"""
 @app.route('/about/')
 def about():
     return render_template('about.html')
 
 
-# this function renders the user page
-# if a user has already logged in, the function passes the needed information to the user page
+"""
+This function routes the to the user url, hosted by the local server.
+When called, it runs through a few different if statements before it renders
+the user page.
+"""
 @app.route('/user/')
 def user():
+    # if the user has already logged it, this will pass through the username and password
+    # if the user is the admin, it will also pass that cookie through
+    # before it renders the
     if request.cookies.get('username') and request.cookies.get('password'):
         un = request.cookies.get('username')
         pw = request.cookies.get('password')
-        if request.cookies.get('admin_logged_in'):
-            admin = request.cookies.get('admin_logged_in')
-            print admin
-            return render_template('user.html', username=un, password=pw, admin=admin)
-        return render_template('user.html', username=un, password=pw)
+        admin_logged = request.cookies.get('admin_logged_in')
+        return render_template('user.html', username=un, password=pw, admin=admin_logged)
     else:
         msg = request.cookies.get('msg')
         return render_template('user.html', msg=msg)
 
 
-# this function checks to see if the user exists and then redirects back to the user page
-# if the user does exist this function returns the information to log the user in
+"""
+This function redirects the to the user url, hosted by the local server.
+When called, it checks to see if the user exists in the database before it
+renders the user page.
+"""
 @app.route('/check_user', methods=['POST', 'GET'])
 def set_user():
+    # if the login button is pressed on the user page, get the username and
+    # password entered by the user
     if request.method == 'POST':
         user_name = request.form['userName']
         password = request.form['password']
@@ -200,7 +214,7 @@ def results():
     return render_template('results.html', genres=genres, awards=award_names, first=first, second=second, third=third, search=search_result)
 
 
-#used for getting all songs or albums
+# used for getting all songs or albums
 @app.route('/set_all', methods=['POST', 'GET'])
 def set_all():
     choice = request.form['all']
@@ -229,7 +243,7 @@ def admin():
     return render_template('admin.html')
 
 
-#used for the filters on the results page
+# used for the filters on the results page
 @app.route('/filter', methods=['POST', 'GET'])
 def filter_result():
     redirect_to_results = redirect('/results')
