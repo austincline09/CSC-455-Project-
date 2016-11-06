@@ -82,3 +82,5 @@ insert into artists values
 	(3003, 'G-Eazy');
 insert into artists values
 	(3004, 'Casey Veggies');
+insert into artists values
+	(3005, 'Aer');

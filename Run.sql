@@ -37,6 +37,9 @@ source Jeremy/insertGEazyAlbumsSongs.sql
 /* Opens the .sql file that adds songs and albums by Casey Veggies. */
 source Jeremy/insertCaseyVeggiesAlbumsSongs.sql
 
+/* Opens the .sql file that adds songs and albums by Aer. */
+source Jeremy/insertAerAlbumsSongs.sql
+
 source Austin/austinInsertMusicData.sql
 source Austin/austinSongLyrics.sql
 source Kennon/folkinsert.sql
