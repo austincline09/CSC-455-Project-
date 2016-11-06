@@ -45,11 +45,11 @@ insert into songs values
 insert into songs values
 	(3202, 'Stars', '000:03:08', '2014-01-01', 1, 3005,  3015, 3005);
 insert into songs values
-	(3203, 'Won't Laugh', '000:04:12', '2014-01-01', 1, 3005,  3015, 3005);
+	(3203, 'Wont Laugh', '000:04:12', '2014-01-01', 1, 3005,  3015, 3005);
 insert into songs values
 	(3204, 'Says She Loves Me', '000:03:39', '2014-01-01', 1, 3005,  3015, 3005);
 insert into songs values
-	(3205, 'I'm Not Sorry', '000:03:52', '2014-01-01', 1, 3005,  3015, 3005);
+	(3205, 'Im Not Sorry', '000:03:52', '2014-01-01', 1, 3005,  3015, 3005);
 insert into songs values
 	(3206, 'Whatever We Want', '000:04:01', '2014-01-01', 1, 3005,  3015, 3005);
 insert into songs values
@@ -59,11 +59,11 @@ insert into songs values
 insert into songs values
 	(3209, 'Above My Floor', '000:03:54', '2014-01-01', 1, 3005,  3015, 3005);
 insert into songs values
-	(3210, 'I'm With It', '000:02:54', '2014-01-01', 1, 3005,  3015, 3005);
+	(3210, 'Im With It', '000:02:54', '2014-01-01', 1, 3005,  3015, 3005);
 insert into songs values
 	(3211, 'Ex', '000:03:17', '2014-01-01', 1, 3005,  3015, 3005);
 insert into songs values
-	(3212, 'Movin' It', '000:03:05', '2014-01-01', 1, 3005,  3015, 3005);
+	(3212, 'Movin It', '000:03:05', '2014-01-01', 1, 3005,  3015, 3005);
 insert into songs values
 	(3213, 'Go', '000:03:02', '2012-06-01', 1, 3005,  3016, 3005);
 insert into songs values
@@ -99,7 +99,7 @@ insert into songs values
 insert into songs values
 	(3229, 'The Reach', '000:02:25', '2011-05-01', 1, 3005,  3017, 3005);
 insert into songs values
-	(3230, 'Comin' From A Basement', '000:02:31', '2011-05-01', 1, 3005,  3017, 3005);
+	(3230, 'Comin From A Basement', '000:02:31', '2011-05-01', 1, 3005,  3017, 3005);
 insert into songs values
 	(3231, 'Run Again', '000:03:10', '2011-05-01', 1, 3005,  3017, 3005);
 insert into songs values
