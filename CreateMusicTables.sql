@@ -6,9 +6,9 @@
 
 
 /*If the following tables exist, remove them from the database*/
-DROP TABLE IF EXISTS currentSearch;
 DROP TABLE IF EXISTS savedsongs;
 DROP TABLE IF EXISTS savedalbums;
+DROP TABLE IF EXISTS currentSearch;
 DROP TABLE IF EXISTS members;
 DROP TABLE IF EXISTS lyrics;
 DROP TABLE IF EXISTS albumAwards;

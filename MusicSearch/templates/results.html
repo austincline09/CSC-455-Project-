@@ -1,36 +1,65 @@
 {% extends "header.html" %}
 {% block body %}
-<body>
+<body xmlns="http://www.w3.org/1999/html">
     <div class="container-fluid text-left">
         <div class="row content">
             <div class="col-sm-2 sidenav">
                 <h3>Filters</h3>
                 <br>
-                <h4>Genre</h4>
-                {% for genre in range(genres|length) %}
-                <div class="radio">
-                    <label><input type="radio" name="optgenre">{{ genres[genre][0] }}</label>
-                </div>
-                {% endfor %}
-                <br>
-                <h4>Award</h4>
-                {% for award in range(awards|length) %}
-                <div class="radio">
-                    <label><input type="radio" name="optaward">{{ awards[award][0] }}</label>
-                </div>
-                {% endfor %}
-                <br>
-                <h4>Length of {{ first }}</h4>
-                <h5>hours : minutes : seconds</h5>
-                <input type="text" class="form-control" placeholder="000:00:00" id="search" name="length">
-                {% if first == "Song" %}
-                <br>
-                <h4>Song Contains Word(s)</h4>
-                <input type="text" class="form-control" placeholder="Enter lyric" id="search" name="songLyric">
-                {% endif %}
-                <br>
-                <button type="submit" id="filterbutton" class="btn btn-default">Filter!</button>
-                <br>
+                    <h4>Genres</h4>
+                <form role="form" action="/filter" method="POST">
+                    {% for genre in range(genres|length) %}
+                    <div class="radio">
+                        <label><input type="radio" name="optgenre" id = {{ genres[genre][0] }} value = {{ genres[genre][0] }}>{{ genres[genre][0] }}</label>
+                    </div>
+                    {% endfor %}
+                    <br>
+                    <h4>Award</h4>
+                    {% for award in range(awards|length) %}
+                    <div class="radio">
+                        <label><input type="radio" name="optaward" id = {{ awards[award][0] }} value = {{ awards[award][0] }}>{{ awards[award][0] }}</label>
+                    </div>
+                    {% endfor %}
+                    <br>
+                    <h4>Length of {{ first }}</h4>
+                    <h5>hours : minutes : seconds</h5>
+                    <select class="form_control" id="hours" name="hours">
+                        <option value=99>99</option>
+                        {% for x in range (100) %}
+                        {% if x < 10 %}
+                            <option value=0{{ x }}>0{{ x }}</option>
+                        {% elif x < 100 %}
+                            <option value={{ x }}>{{ x }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    <select class="form_control" id="minutes" name="minutes">
+                        {% for x in range (61) %}
+                        {% if x < 10 %}
+                            <option value=0{{ x }}>0{{ x }}</option>
+                        {% else %}
+                            <option value={{ x }}>{{ x }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    <select class="form_control" id="seconds" name="seconds">
+                        {% for x in range (61) %}
+                        {% if x < 10 %}
+                            <option value=0{{ x }}>0{{ x }}</option>
+                        {% else %}
+                            <option value={{ x }}>{{ x }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    {% if first == "Song" %}
+                    <br>
+                    <h4>Song Contains Word(s)</h4>
+                    <input type="text" class="form-control" placeholder="Enter lyric" id="songLyric" name="songLyric">
+                    {% endif %}
+                    <br>
+                     <button type="submit" id="lyric_filter" class="btn btn-default">Filter!</button>
+                    <hr>
+                </form>
             </div>
             <div class="col-sm-8 text-left">
                 <h3>You searched for {{ third }} in {{ first }} {{ second }}</h3>

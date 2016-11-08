@@ -1,0 +1,16 @@
+{% extends "header.html" %}
+{% block body %}
+<body>
+    <div class="container-fluid text-center">
+        <div class="row content">
+            <div class="col-sm-2 sidenav"></div>
+            <div class="col-sm-8 text-left">
+                {% for lr in range(lyric|length) %}
+                    {{ lyric[lr] }}
+                    <br>
+                {% endfor %}
+            </div>
+         </div>
+     </div>
+</body>
+{% endblock %}

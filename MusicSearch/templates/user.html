@@ -6,7 +6,11 @@
                 <div class="col-sm-2 sidenav">
                 </div>
                 <div class="col-sm-8 text-center">
-                    {% if username and password %}
+                    {% if msg %}
+                    <h3>{{ msg }}</h3>
+                    {% endif %}
+
+                    {% if admin %}
                     <br>
                     <br>
                     <h1>{{ username }}, you are logged in!</h1>
@@ -17,6 +21,23 @@
                     <br>
                     <form role="form" action="/saved" method="POST">
                         <input type="submit" name="saved" id="logoutbutton" class="btn btn-default" value="saved"></input>
+                    </form>
+                    <br>
+                    <form role="form" action="/admin_page/" method="GET">
+                        <input type="submit" name="manage" id="managebutton" class="btn btn-default" value="manage"></input>
+                    </form>
+                    <hr>
+                    {% elif username and password %}
+                    <br>
+                    <br>
+                    <h1>{{ username }}, you are logged in!</h1>
+                    <br>
+                    <form role="form" action="/logout" method="POST">
+                        <input type="submit" name="logout" id="logoutbutton" class="btn btn-default" value="logout"></input>
+                    </form>
+                    <br>
+                    <form role="form" action="/saved" method="POST">
+                        <input type="submit" name="saved" id="savedbutton" class="btn btn-default" value="saved"></input>
                     </form>
                     <br>
                     <form role="form" action="/delete_user" method="POST">
@@ -32,11 +53,11 @@
                         <br>
                         <input type="password" class="form-control" placeholder="Enter password" id="pwSet" name="password">
                         <br>
-                        <button type="submit" id="loginButton" class="btn btn-default">Login</button>
+                        <button type="submit" id="loginButton" class="btn btn-success">Login</button>
                     </form>
                     <br>
                     <form role="form" action="/register/" method="POST">
-                        <input type="submit" name="register" id="registerbutton" class="btn btn-default" value="register"></input>
+                        <input type="submit" name="register" id="registerbutton" class="btn btn-" value="register"></input>
                     </form>
                     {% endif %}
                 </div>
