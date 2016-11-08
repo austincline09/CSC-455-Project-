@@ -184,7 +184,7 @@ CREATE TABLE savedalbums(
 	FOREIGN KEY (User_Name) REFERENCES members (User_Name)				/* Checks if the User_Name is in the members table */
 		ON DELETE CASCADE												/* If removed in parent table, remove in this table.  every proceeding ON DELETE CASCADE does the same thing  */
 		ON UPDATE CASCADE,
-	FOREIGN KEY (Album_ID) REFERENCES album (Album_ID)					/* Checks if the album ID is in the album table */
+	FOREIGN KEY (Album_ID) REFERENCES albums (Album_ID)					/* Checks if the album ID is in the album table */
 		ON DELETE CASCADE												/* If removed in parent table, remove in this table.  every proceeding ON DELETE CASCADE does the same thing  */
 		ON UPDATE CASCADE
 	)ENGINE=INNODB;
