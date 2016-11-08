@@ -13,6 +13,8 @@ our database hosted on UNCW's servers.
 from flask import Flask, request, render_template, redirect, current_app
 import search_bar_db
 import login_db
+import song_info_db
+# import spotifyRequests
 # end import statements
 
 # creates the application
@@ -25,6 +27,8 @@ want to choose to search for a song or an album.
 """
 @app.route('/')
 def search_one():
+    clear = search_bar_db.CallDataBase("Song", "By Name", "one")
+    clear.clearCurrentSearch()
     return render_template('searchFirst.html')
 
 
@@ -207,8 +211,11 @@ def results():
     first = request.cookies.get('first_cookie')
     second = request.cookies.get('second_cookie')
     third = request.cookies.get('third_cookie')
+    # spotifyRequests.search_artist(third)
     db = search_bar_db.CallDataBase(first, second, third)
     search_result = db.getResult()
+    idSong = db.getidResult()
+    db.inCurrentSearch(idSong)
     genres = db.getGenres()
     award_names = db.getAwards()
     return render_template('results.html', genres=genres, awards=award_names, first=first, second=second, third=third, search=search_result)
@@ -254,14 +261,29 @@ def filter_result():
     if request.form.getlist('optaward'):
         award = request.form.getlist('optaward')
         print award[0]
-    if request.form.getlist('length'):
-        length = request.form.getlist('length')
-        print length[0]
-    if request.form.getlist('songLyric'):
+    if request.form.getlist('hours'):
+        hours = request.form.getlist('hours')
+        print hours[0]
+    if request.form.getlist('minutes'):
+        minutes = request.form.getlist('minutes')
+        print minutes[0]
+    if request.form.getlist('seconds'):
+        seconds = request.form.getlist('seconds')
+        print seconds[0]
+    if request.form.getlist('songLyric') and request.form.getlist('songLyric') != '':
         songLyric = request.form.getlist('songLyric')
         print songLyric[0]
     return search_text
 
+
+# prints some lyrics when called
+@app.route('/song_info/')
+def song_info():
+    lic = song_info_db.CallDataBase()
+    lyric = lic.get_lyric()
+    print lyric
+    lyric = lyric[0].split('\n')
+    return render_template('song_info.html', lyric=lyric)
 
 # if the app exists, run that junk
 if __name__ == "__main__":

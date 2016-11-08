@@ -23,7 +23,34 @@
                     <br>
                     <h4>Length of {{ first }}</h4>
                     <h5>hours : minutes : seconds</h5>
-                    <input type="text" class="form-control" placeholder="000:00:00" id="length" name="length">
+                    <select class="form_control" id="hours" name="hours">
+                        <option value=99>99</option>
+                        {% for x in range (100) %}
+                        {% if x < 10 %}
+                            <option value=0{{ x }}>0{{ x }}</option>
+                        {% elif x < 100 %}
+                            <option value={{ x }}>{{ x }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    <select class="form_control" id="minutes" name="minutes">
+                        {% for x in range (61) %}
+                        {% if x < 10 %}
+                            <option value=0{{ x }}>0{{ x }}</option>
+                        {% else %}
+                            <option value={{ x }}>{{ x }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    <select class="form_control" id="seconds" name="seconds">
+                        {% for x in range (61) %}
+                        {% if x < 10 %}
+                            <option value=0{{ x }}>0{{ x }}</option>
+                        {% else %}
+                            <option value={{ x }}>{{ x }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
                     {% if first == "Song" %}
                     <br>
                     <h4>Song Contains Word(s)</h4>
