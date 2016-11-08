@@ -39,7 +39,7 @@ CREATE TABLE savedsongs(
 		ON UPDATE CASCADE,
 	FOREIGN KEY (Song_ID) REFERENCES songs (SONG_ID)					/* Checks if the song ID is in the songs table */
 		ON DELETE CASCADE												/* If removed in parent table, remove in this table.  every proceeding ON DELETE CASCADE does the same thing  */
-		ON UPDATE CASCADE,
+		ON UPDATE CASCADE
 	)ENGINE=INNODB;
 
 /* This table will hold every album saved by a specific user.
@@ -53,7 +53,7 @@ CREATE TABLE savedalbums(
 		ON UPDATE CASCADE,
 	FOREIGN KEY (Album_ID) REFERENCES album (Album_ID)					/* Checks if the album ID is in the album table */
 		ON DELETE CASCADE												/* If removed in parent table, remove in this table.  every proceeding ON DELETE CASCADE does the same thing  */
-		ON UPDATE CASCADE,
+		ON UPDATE CASCADE
 	)ENGINE=INNODB;
 	
 
