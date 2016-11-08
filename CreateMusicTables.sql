@@ -34,7 +34,7 @@ CREATE TABLE savedsongs(
 	User_Name				VARCHAR(50) NOT NULL,						/* Foreign Key. can be up to 50 characters.  cannot be null. */
 	Song_ID					SMALLINT UNSIGNED NOT NULL,					/* Foreign Key. can be any integer >= 0, but less than 65535. can not be null.*/
 	PRIMARY KEY (User_Name, Song_ID),
-	FOREIGN KEY (UserName) REFERENCES members (User_Name)				/* Checks if the User_Name is in the members table */
+	FOREIGN KEY (User_Name) REFERENCES members (User_Name)				/* Checks if the User_Name is in the members table */
 		ON DELETE CASCADE												/* If removed in parent table, remove in this table.  every proceeding ON DELETE CASCADE does the same thing  */
 		ON UPDATE CASCADE,
 	FOREIGN KEY (Song_ID) REFERENCES songs (SONG_ID)					/* Checks if the song ID is in the songs table */
@@ -48,7 +48,7 @@ CREATE TABLE savedalbums(
 	User_Name				VARCHAR(50) NOT NULL,						/* Foreign Key. can be up to 50 characters.  cannot be null. */
 	Album_ID				SMALLINT UNSIGNED NOT NULL,					/* Foreign Key. can be any integer >= 0, but less than 65535. can not be null.*/
 	PRIMARY KEY (User_Name, Album_ID),
-	FOREIGN KEY (UserName) REFERENCES members (User_Name)				/* Checks if the User_Name is in the members table */
+	FOREIGN KEY (User_Name) REFERENCES members (User_Name)				/* Checks if the User_Name is in the members table */
 		ON DELETE CASCADE												/* If removed in parent table, remove in this table.  every proceeding ON DELETE CASCADE does the same thing  */
 		ON UPDATE CASCADE,
 	FOREIGN KEY (Album_ID) REFERENCES album (Album_ID)					/* Checks if the album ID is in the album table */
