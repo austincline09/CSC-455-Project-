@@ -40,6 +40,9 @@ source Jeremy/insertCaseyVeggiesAlbumsSongs.sql
 /* Opens the .sql file that adds songs and albums by Aer. */
 source Jeremy/insertAerAlbumsSongs.sql
 
+/* Opens the .sql file that adds songs and albums by The Beatles. */
+source Jeremy/inserttheBeatlesAlbumsSongs.sql
+
 source Austin/austinInsertMusicData.sql
 source Austin/austinSongLyrics.sql
 source Kennon/folkinsert.sql

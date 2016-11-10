@@ -253,10 +253,11 @@ def admin():
 # used for the filters on the results page
 @app.route('/filter', methods=['POST', 'GET'])
 def filter_result():
-    redirect_to_results = redirect('/results')
+    redirect_to_results = redirect('/filtered_results')
     search_text = current_app.make_response(redirect_to_results)
     if request.form.getlist('optgenre'):
         genre = request.form.getlist('optgenre')
+        search_text.set_cookie('genre', genre)
         print genre[0]
     if request.form.getlist('optaward'):
         award = request.form.getlist('optaward')
@@ -273,8 +274,24 @@ def filter_result():
     if request.form.getlist('songLyric') and request.form.getlist('songLyric') != '':
         songLyric = request.form.getlist('songLyric')
         print songLyric[0]
+
+    # get new search results
+    # render html template
     return search_text
 
+"""
+@app.route('/filtered_results')
+def filtered_results():
+    first = request.cookies.get('first_cookie')
+    second = request.cookies.get('second_cookie')
+    third = request.cookies.get('third_cookie')
+    genre = request.cookies.get('genre')
+    db = search_bar_db.CallDataBase(first, second, third)
+    search_result = db.filterResults(genre)
+    genres = db.getGenres()
+    award_names = db.getAwards()
+    return render_template('results.html', genres=genres, awards=award_names, first=first, second=second, third=third, search=search_result)
+"""
 
 # prints some lyrics when called
 @app.route('/song_info/')
