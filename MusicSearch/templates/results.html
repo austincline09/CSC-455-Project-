@@ -1,6 +1,5 @@
 {% extends "header.html" %}
 {% block body %}
-<body>
 <script>
 	jQuery(document).ready(function($) {
     $(".clickable-row").click(function() {
@@ -8,11 +7,10 @@
     });
 });
 </script>
-
+<body xmlns="http://www.w3.org/1999/html">
     <div class="container-fluid text-left">
         <div class="row content">
             <div class="col-sm-2 sidenav">
-                <br>
                 <a href="/results">Clear Filters</a>
                 <h3>Filters</h3>
                 <br>
@@ -34,14 +32,14 @@
                     <h4>Length of {{ first }}</h4>
                     <h5>hours : minutes : seconds</h5>
                     <select class="form_control" id="hours" name="hours">
-                        {% for x in range (99) %}
+                        <option value=99>99</option>
+                        {% for x in range (100) %}
                         {% if x < 10 %}
                             <option value=0{{ x }}>0{{ x }}</option>
-                        {% elif x < 99 %}
+                        {% elif x < 100 %}
                             <option value={{ x }}>{{ x }}</option>
                         {% endif %}
                         {% endfor %}
-                        <option value=99 selected>99</option>
                     </select>
                     <select class="form_control" id="minutes" name="minutes">
                         {% for x in range (61) %}
@@ -69,6 +67,7 @@
                     <input type="date" class="form-control" id="released_before" name="released_before">
                     <br>
                     {% if first == "Song" %}
+                    <br>
                     <h4>Song Contains Word(s)</h4>
                     <input type="text" class="form-control" placeholder="Enter lyric" id="songLyric" name="songLyric">
                     {% endif %}
@@ -92,7 +91,7 @@
                             </thead>
                             <tbody>
                             {% for x in range(search|length) %}
-                            <tr class="clickable-row" data-href="/song_info/">
+                            <tr  class="clickable-row" data-href="/song_info/"+{{ search[x][2] }}>
                                 <td>{{ search[x][0] }}</td>
                                 <td>{{ search[x][1] }}</td>
                                 <td>
