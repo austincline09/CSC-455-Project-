@@ -1,12 +1,14 @@
 import MySQLdb
+import come
+import storedProcedures
 
 
 class CallDataBase:
     def __init__(self, song_or_album, by_name_or_artist, user_search):
         self.b = MySQLdb.connect(host='152.20.234.248',
-                            user='jtb9611',
-                            passwd='5BWYH6fXO',
-                            db='jtb9611')
+                            user='kly2888',
+                            passwd='FaehAKUMP',
+                            db='kly2888')
 
         results = self.b.cursor()
         idResults = self.b.cursor()
@@ -61,7 +63,7 @@ class CallDataBase:
     def getidResult(self):
         return self.idResults
 
-    def inCurrentSearch(self, listList):
+    def inCurrentSearch(self, listList):##insert original search into currentSearch
         insertNew = self.b.cursor()
         for i in range(len(listList)):
             idvalue = str(listList[i][0])
@@ -75,3 +77,55 @@ class CallDataBase:
     def clearCurrentSearch(self):
         delTable = self.b.cursor()
         delTable.execute("TRUNCATE TABLE currentSearch")
+
+
+
+    def filter(self,whichFilter,valueFilter,sngOralbm):
+        something = storedProcedures.StoredPro()
+        # filterTable = self.b.cursor()
+        # varible = self.b.cursor()
+        # filterfilter = self.b.cursor()
+        # trial = self.b.cursor()
+        #
+        # if whichFilter == "genre":
+        #     print(sngOralbm)
+        #     newest = something.checkCS(whichFilter,valueFilter,sngOralbm)
+        #     print(newest)
+        #     self.stripValues(newest)
+        # if whichFilter == "award":
+        #     newest = something.checkCS(whichFilter, valueFilter,sngOralbm)
+        #     print(newest)
+        #     self.stripValues(newest)
+        # if whichFilter == "lyric":
+        #     print("hitting lyrics")
+        #     newest = something.checkCS(whichFilter,valueFilter,sngOralbm)
+        #     print(newest)
+        #     self.stripValues(newest)
+
+        newest = something.checkCS(whichFilter,valueFilter,sngOralbm)
+        print(newest)
+        self.stripValues(newest)
+
+
+
+
+
+    def stripValues(self, quereyList):
+        list = []
+        #self.clearCurrentSearch()
+        insertcurrentSearch = self.b.cursor()
+        for i in range(len(quereyList)):
+            toInsert = str(quereyList[i][0])
+            list.append(toInsert)
+            i += 1
+        #print list
+        newInsert = come.insertDatabase()
+        newInsert.insertValue(list)
+
+
+
+
+
+
+
+

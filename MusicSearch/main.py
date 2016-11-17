@@ -14,11 +14,14 @@ from flask import Flask, request, render_template, redirect, current_app
 import search_bar_db
 import login_db
 import song_info_db
+import CheckCS
 # import spotifyRequests
 # end import statements
 
 # creates the application
 app = Flask(__name__)
+
+first_select = ' ' ##allows to pass this value that changes when clicked to another function
 
 """
 This function routes the to the base url, hosted by the local server.
@@ -155,7 +158,9 @@ def logout():
 # when called it redirects to the second search option
 @app.route('/set_search_one', methods=['POST', 'GET'])
 def set_search_one():
+
     if request.method == 'POST':
+        global first_select ##allows to pass this value to another function
         first_select = request.form['first']
     redirect_to_second = redirect('/search_two')
     response = current_app.make_response(redirect_to_second)
@@ -253,14 +258,31 @@ def admin():
 # used for the filters on the results page
 @app.route('/filter', methods=['POST', 'GET'])
 def filter_result():
+    trial = CheckCS.check()
     redirect_to_results = redirect('/results')
     search_text = current_app.make_response(redirect_to_results)
+    albumOrsong = first_select  ##value song or album, passed from set_search_one
+    first = request.cookies.get('first_cookie')
+    second = request.cookies.get('second_cookie')
+    third = request.cookies.get('third_cookie')
+    # spotifyRequests.search_artist(third)
+    db = search_bar_db.CallDataBase(first, second, third)
+    genres = db.getGenres()
+    award_names = db.getAwards()
     if request.form.getlist('optgenre'):
         genre = request.form.getlist('optgenre')
-        print genre[0]
+        label = 'genre'
+        value = genre[0]
+        print value
+        db.filter(label,value,albumOrsong)
     if request.form.getlist('optaward'):
+        print("Didnt hit awawrd")
         award = request.form.getlist('optaward')
-        print award[0]
+        label = 'award'
+        value = award[0]
+        print value
+        db.filter(label,value,albumOrsong)
+    '''
     if request.form.getlist('hours'):
         hours = request.form.getlist('hours')
         print hours[0]
@@ -270,10 +292,27 @@ def filter_result():
     if request.form.getlist('seconds'):
         seconds = request.form.getlist('seconds')
         print seconds[0]
-    if request.form.getlist('songLyric') and request.form.getlist('songLyric') != '':
+     '''#hope fully the problem
+
+    if request.form.getlist('songLyric'):
         songLyric = request.form.getlist('songLyric')
-        print songLyric[0]
-    return search_text
+        label = 'lyric'
+        value = songLyric[0]
+        if value == "":
+            print("Im empty")
+        else:
+            print("Im not empty")
+            db.filter(label,value,albumOrsong)
+
+
+
+
+
+    display = trial.displayCS(albumOrsong)
+    print(display)
+
+
+    return render_template('results.html', genres=genres, awards=award_names, first=first, second=second, third=third, search=display)
 
 
 # prints some lyrics when called
