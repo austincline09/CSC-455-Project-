@@ -158,7 +158,6 @@ def logout():
 # when called it redirects to the second search option
 @app.route('/set_search_one', methods=['POST', 'GET'])
 def set_search_one():
-
     if request.method == 'POST':
         global first_select ##allows to pass this value to another function
         first_select = request.form['first']
@@ -212,7 +211,9 @@ def set_results():
 
 # need to implement the routes for the filters
 @app.route('/results', methods=['POST', 'GET'])
-def results():
+def results(show="false", album_id=0):
+    print album_id
+    albumsongs = ''
     first = request.cookies.get('first_cookie')
     second = request.cookies.get('second_cookie')
     third = request.cookies.get('third_cookie')
@@ -224,11 +225,21 @@ def results():
     db.inCurrentSearch(idSong)
     genres = db.getGenres()
     award_names = db.getAwards()
+    if album_id != 0:
+        albumsongs = db.get_album_songs(album_id)
     if request.cookies.get('username'):
-        return render_template('results.html', genres=genres, awards=award_names, first=first, second=second, third=third, search=search_result, log="true")
+        return render_template('results.html', albumsongs=albumsongs, show=show, genres=genres, awards=award_names, first=first, second=second, third=third, search=search_result, log="true")
     else:
-        return render_template('results.html', genres=genres, awards=award_names, first=first, second=second,
+        return render_template('results.html', albumsongs=albumsongs,show=show, genres=genres, awards=award_names, first=first, second=second,
                                third=third, search=search_result)
+
+
+@app.route('/show_songs/<album_id>', methods=['POST', 'GET'])
+def show_album_songs(album_id):
+    redirect_to_results = redirect('/results')
+    search_text = current_app.make_response(redirect_to_results)
+    search_text.set_cookie('show', album_id)
+    return results("true", album_id)
 
 
 # used for getting all songs or albums
@@ -261,6 +272,7 @@ def admin():
     all_users = get.get_users()
     print all_users
     return render_template('admin.html', users=all_users)
+
 
 @app.route('/remove_user/<username>')
 def remove_user(username):

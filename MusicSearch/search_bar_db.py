@@ -99,6 +99,13 @@ class CallDataBase:
         newInsert = come.insertDatabase()
         newInsert.insertValue(list)
 
+    def get_album_songs(self, album_id):
+        song = self.b.cursor()
+        query = "select Song_Name from songs where Album_ID='" + album_id + "'"
+        song.execute(query)
+        songs = song.fetchall()
+        return songs
+
 
 
 

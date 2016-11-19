@@ -101,7 +101,7 @@
                                 </td>
                                 {% elif first == "Album" %}
                                 <td>
-                                    <a href="/">
+                                    <a href="/show_songs/{{search[x][2]}}">
                                     <button type="button" class="btn btn-default btn-lg">
                                         <span class="glyphicon glyphicon-info-sign"></span>
                                     </button>
@@ -131,6 +131,31 @@
                         </table>
                     </div>
                 </div>
+
+                {% if first=="Album" %}
+                {% if show == "true" %}
+                <div id="results_div">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="results_table">
+                            <thead>
+                                <tr>
+                                    <th>Song</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for x in range(albumsongs|length) %}
+                                <tr>
+                                    <td>{{ albumsongs[x][0] }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+
+
             </div>
         </div>
     </div>
