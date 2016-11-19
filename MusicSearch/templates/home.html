@@ -105,10 +105,15 @@ transition-delay:.2s;
                     //Add your images, we'll set the path in the next step
                         var images = ['watsky.jpg', 'beatles.jpg', 'childish_gambino.jpg', 'g-eazy.jpg', 'logic.jpg', 'aer.jpg', 'kid_cudi.jpg'];
 
-                    //Build the img, then do a bit of maths to randomize load and append to a div. Add a touch off css to fade them badboys in all sexy like.
-                        $('<img class="img-responsive" height=100% width=100% src="static/images/' + images[Math.floor(Math.random() * images.length)] + '">').appendTo('#banner-load');
+                        function foo(){
+                            $('#banner-load').empty();
+                            var im = $('<img class="img-responsive" height=100% width=100% src="static/images/' + images[Math.floor(Math.random() * images.length)] + '">');
+                            $('#banner-load').append(im);
+                            setTimeout(foo, 2000);
+                        }
+                        foo();
+
                     </script>
-                    <!--<img class="img-responsive" src="static/images/beatles.jpg" alt="">-->
                     <h2>hover over picture to begin</h2>
                     <div class="overlay">
                         <a class="info" href="/start">Click here to start your search.</a>

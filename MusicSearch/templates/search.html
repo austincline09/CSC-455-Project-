@@ -63,7 +63,12 @@
                 <h1>Search for {{ first }} by {{second }} </h1>
                 {% endif %}
                 <hr>
-                <div class="container">
+                <form role="form" action="/set_results" method="POST">
+                    <input type="text" class="form-control" placeholder="Search" id="search" name="search_text">
+                    <br>
+                    <button type="submit" id="lyric_filter" class="btn btn-default">Enter</button>
+                </form>
+                <!--<div class="container">
                     <div class="row">
                         <div class="col-md-4 col-md-offset-3">
                             <form action="/set_results" class="search-form" method="POST">
@@ -75,7 +80,7 @@
                             </form>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
             <div class="col-sm-2 sidenav"></div>
         </div>

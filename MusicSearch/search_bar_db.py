@@ -20,17 +20,17 @@ class CallDataBase:
         if user_search != '':
             if song_or_album == "Song":
                 if by_name_or_artist == "By Name":
-                    results.execute("Select Song_Name, Artist_Name from songs natural join artists where Song_Name like '%"+user_search+"%'")
+                    results.execute("Select Song_Name, Artist_Name, Song_ID from songs natural join artists where Song_Name like '%"+user_search+"%'")
                     idResults.execute("Select Song_ID from songs where Song_Name like '%" + user_search + "%'")
                 elif by_name_or_artist == "By Artist":
-                    results.execute("Select Song_Name, Artist_Name from songs natural join artists where Artist_Name like '%"+user_search+"%'")
+                    results.execute("Select Song_Name, Artist_Name, Song_ID from songs natural join artists where Artist_Name like '%"+user_search+"%'")
                     idResults.execute("Select Song_ID from songs natural join artists where Artist_Name like '%" + user_search + "%'")
             elif song_or_album == "Album":
                 if by_name_or_artist == "By Name":
-                    results.execute("Select Album_Name, Artist_Name from albums natural join artists where Album_Name like '%"+user_search+"%'")
+                    results.execute("Select Album_Name, Artist_Name, Album_ID from albums natural join artists where Album_Name like '%"+user_search+"%'")
                     idResults.execute("Select Album_ID from albums where Album_Name like '%" + user_search + "%'")
                 elif by_name_or_artist == "By Artist":
-                    results.execute("Select Album_Name, Artist_Name from albums natural join artists where Artist_Name like '%"+user_search+"%'")
+                    results.execute("Select Album_Name, Artist_Name, Album_ID from albums natural join artists where Artist_Name like '%"+user_search+"%'")
                     idResults.execute("Select Album_ID from albums natural join artists where Artist_Name like '%" + user_search + "%'")
             self.result = results.fetchall()
         elif song_or_album == "Song":
@@ -85,9 +85,6 @@ class CallDataBase:
         newest = something.checkCS(whichFilter,valueFilter,sngOralbm)
         print(newest)
         self.stripValues(newest)
-
-
-
 
 
     def stripValues(self, quereyList):

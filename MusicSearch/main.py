@@ -1,7 +1,7 @@
 """
 Created by Jeremy Timothy Brown
-Version 1.0
-Last Update 11/02/2016 12:23PM EST
+Version 3.0.2
+Last Update 11/19/2016 10:11AM EST
 
 
 This python runs all flask which is used to render the .html files, create cookies
@@ -15,6 +15,8 @@ import search_bar_db
 import login_db
 import song_info_db
 import CheckCS
+import userSaves
+import admin as a
 # import spotifyRequests
 # end import statements
 
@@ -23,15 +25,15 @@ app = Flask(__name__)
 
 first_select = ' ' ##allows to pass this value that changes when clicked to another function
 
+
 @app.route('/')
 def home():
     return render_template('home.html')
 
-"""
-This function routes the to the base url, hosted by the local server.
-When called, it renders the main page which allows the user to select if they
-want to choose to search for a song or an album.
-"""
+
+# This function routes the to the base url, hosted by the local server.
+# When called, it renders the main page which allows the user to select if they
+# want to choose to search for a song or an album.
 @app.route('/start')
 def search_one():
     clear = search_bar_db.CallDataBase("Song", "By Name", "one")
@@ -39,20 +41,16 @@ def search_one():
     return render_template('searchFirst.html')
 
 
-"""
-This function routes the to the about url, hosted by the local server.
-When called, it renders the about page.
-"""
+# This function routes the to the about url, hosted by the local server.
+# When called, it renders the about page.
 @app.route('/about/')
 def about():
     return render_template('about.html')
 
 
-"""
-This function routes the to the user url, hosted by the local server.
-When called, it runs through a few different if statements before it renders
-the user page.
-"""
+# This function routes the to the user url, hosted by the local server.
+# When called, it runs through a few different if statements before it renders
+# the user page.
 @app.route('/user/')
 def user():
     # if the user has already logged it, this will pass through the username and password
@@ -68,11 +66,9 @@ def user():
         return render_template('user.html', msg=msg)
 
 
-"""
-This function redirects the to the user url, hosted by the local server.
-When called, it checks to see if the user exists in the database before it
-renders the user page.
-"""
+# This function redirects the to the user url, hosted by the local server.
+# When called, it checks to see if the user exists in the database before it
+# renders the user page.
 @app.route('/check_user', methods=['POST', 'GET'])
 def set_user():
     # if the login button is pressed on the user page, get the username and
@@ -118,7 +114,7 @@ def delete_user():
 def register():
     if request.cookies.get('msg'):
         msg = request.cookies.get('msg')
-        print msg
+        # print msg
         return render_template('register.html', msg=msg)
     else:
         return render_template('register.html')
@@ -224,10 +220,15 @@ def results():
     db = search_bar_db.CallDataBase(first, second, third)
     search_result = db.getResult()
     idSong = db.getidResult()
+    db.clearCurrentSearch()
     db.inCurrentSearch(idSong)
     genres = db.getGenres()
     award_names = db.getAwards()
-    return render_template('results.html', genres=genres, awards=award_names, first=first, second=second, third=third, search=search_result)
+    if request.cookies.get('username'):
+        return render_template('results.html', genres=genres, awards=award_names, first=first, second=second, third=third, search=search_result, log="true")
+    else:
+        return render_template('results.html', genres=genres, awards=award_names, first=first, second=second,
+                               third=third, search=search_result)
 
 
 # used for getting all songs or albums
@@ -254,79 +255,152 @@ def set_all():
         return search_text
 
 
-@app.route('/admin_page/')
+@app.route('/admin_page')
 def admin():
-    return render_template('admin.html')
+    get = a.CallDataBase()
+    all_users = get.get_users()
+    print all_users
+    return render_template('admin.html', users=all_users)
+
+@app.route('/remove_user/<username>')
+def remove_user(username):
+    remove = a.CallDataBase()
+    remove.delete_user(username)
+    return admin()
 
 
 # used for the filters on the results page
 @app.route('/filter', methods=['POST', 'GET'])
 def filter_result():
     trial = CheckCS.check()
-    redirect_to_results = redirect('/results')
-    search_text = current_app.make_response(redirect_to_results)
     albumOrsong = first_select  ##value song or album, passed from set_search_one
     first = request.cookies.get('first_cookie')
     second = request.cookies.get('second_cookie')
     third = request.cookies.get('third_cookie')
-    # spotifyRequests.search_artist(third)
     db = search_bar_db.CallDataBase(first, second, third)
     genres = db.getGenres()
     award_names = db.getAwards()
+
+    # filter for genre
     if request.form.getlist('optgenre'):
         genre = request.form.getlist('optgenre')
         label = 'genre'
         value = genre[0]
-        print value
-        db.filter(label,value,albumOrsong)
+        db.filter(label, value, albumOrsong)
+
+    # filter for award
     if request.form.getlist('optaward'):
         print("Didnt hit awawrd")
         award = request.form.getlist('optaward')
         label = 'award'
         value = award[0]
         print value
-        db.filter(label,value,albumOrsong)
-    '''
+        db.filter(label, value,albumOrsong)
+
     if request.form.getlist('hours'):
         hours = request.form.getlist('hours')
-        print hours[0]
-    if request.form.getlist('minutes'):
-        minutes = request.form.getlist('minutes')
-        print minutes[0]
-    if request.form.getlist('seconds'):
-        seconds = request.form.getlist('seconds')
-        print seconds[0]
-     '''#hope fully the problem
+        if request.form.getlist('minutes'):
+            minutes = request.form.getlist('minutes')
+        if request.form.getlist('seconds'):
+            seconds = request.form.getlist('seconds')
+            length = hours[0]+":"+minutes[0]+":"+seconds[0]
+            print length
 
     if request.form.getlist('songLyric'):
         songLyric = request.form.getlist('songLyric')
         label = 'lyric'
         value = songLyric[0]
         if value == "":
-            print("Im empty")
+            print("lyric filter is empty")
         else:
-            print("Im not empty")
+            # print("Im not empty")
             db.filter(label,value,albumOrsong)
 
-
-
-
-
     display = trial.displayCS(albumOrsong)
-    print(display)
-
-
-    return render_template('results.html', genres=genres, awards=award_names, first=first, second=second, third=third, search=display)
+    # print(display)
+    if request.cookies.get('username'):
+        return render_template('results.html', genres=genres, awards=award_names, first=first, second=second,
+                               third=third, search=display, log="true", filter="true")
+    else:
+        return render_template('results.html', genres=genres, awards=award_names, first=first, second=second,
+                               third=third, search=display, filter='true')
 
 
 # prints some lyrics when called
-@app.route('/song_info/')
-def song_info():
-    lic = song_info_db.CallDataBase()
-    lyric = lic.get_lyric()
-    print lyric
-    lyric = lyric[0].split('\n')
-    return render_template('song_info.html', lyric=lyric)
+@app.route('/song_info/<song_id>/')
+def song_info(song_id):
+    song = song_info_db.CallDataBase()
+    song_infos = song.get_song_info(song_id)
+    album = song.get_album(song_id)
+    artist = song.get_artist(song_id)
+    genre = song.get_genre(song_id)
+    hours, remainder = divmod(song_infos[0][1].seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    name = song_infos[0][0]
+    if minutes < 10:
+        length = str(hours)+":0"+str(minutes)+":"+str(seconds)
+    else:
+        length = str(hours) + ":" + str(minutes) + ":" + str(seconds)
+    released = song_infos[0][2]
+    lyric = song.get_lyric(song_id)
+    if lyric == "false":
+        return render_template('song_info.html', artist=artist, genre=genre, name=name, length=length,
+                               released=released, album=album)
+    else:
+        lyric = lyric[0].split('\n')
+        return render_template('song_info.html', lyric=lyric, artist=artist, genre=genre, name=name, length=length, released=released, album=album)
+
+@app.route('/save/<artist_id>/')
+def save_artist(artist_id):
+    id_type = request.cookies.get('first_cookie')
+    un = request.cookies.get('username')
+    save = userSaves.CallDataBase()
+    if id_type == "Song":
+        save.save_song(un, artist_id)
+    elif id_type == "Album":
+        save.save_album(un, artist_id)
+    else:
+        print "save failed"
+    return results()
+
+
+@app.route('/savef/<artist_id>/')
+def savef_artist(artist_id):
+    id_type = request.cookies.get('first_cookie')
+    un = request.cookies.get('username')
+    save = userSaves.CallDataBase()
+    if id_type == "Song":
+        save.save_song(un, artist_id)
+    elif id_type == "Album":
+        save.save_album(un, artist_id)
+    else:
+        print "save failed"
+    return filter_result()
+
+
+@app.route('/remove_album/<album_ID>')
+def remove_saved_album(album_ID):
+    username = request.cookies.get('username')
+    remove = userSaves.CallDataBase()
+    remove.remove_album(username, album_ID)
+    return saved()
+
+@app.route('/remove_song/<song_ID>')
+def remove_saved_song(song_ID):
+    username = request.cookies.get('username')
+    remove = userSaves.CallDataBase()
+    remove.remove_song(username, song_ID)
+    return saved()
+
+
+# route for rendering a user's saved songs and albums
+@app.route('/saved', methods=['POST', 'GET'])
+def saved():
+    username = request.cookies.get('username')
+    save = userSaves.CallDataBase()
+    songs = save.get_user_songs(username)
+    albums = save.get_user_albums(username)
+    return render_template("saved.html", songs=songs, albums=albums)
 
 # if the app exists, run that junk
 if __name__ == "__main__":

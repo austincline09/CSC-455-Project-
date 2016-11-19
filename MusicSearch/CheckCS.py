@@ -2,7 +2,7 @@ import MySQLdb
 
 class check:
 
-    def displayCS(self,aOrs):
+    def displayCS(self, aOrs):
         self.b = MySQLdb.connect(host='152.20.234.248',
                                  user='jtb9611',
                                  passwd='5BWYH6fXO',

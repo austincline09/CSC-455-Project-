@@ -1,12 +1,5 @@
 {% extends "header.html" %}
 {% block body %}
-<script>
-	jQuery(document).ready(function($) {
-    $(".clickable-row").click(function() {
-        window.document.location = $(this).data("href");
-    });
-});
-</script>
 <body xmlns="http://www.w3.org/1999/html">
     <div class="container-fluid text-left">
         <div class="row content">
@@ -86,19 +79,52 @@
                             <tr>
                                 <th> {{ first }} </th>
                                 <th>Artist</th>
-                                <th>Save</th>
+                                {% if first == "Song" %}
+                                <th>Info<th>
+                                {% elif first == "Album" %}
+                                <th>Show Songs</th>
+                                {% endif %}
                             </tr>
                             </thead>
                             <tbody>
                             {% for x in range(search|length) %}
-                            <tr  class="clickable-row" data-href="/song_info/"+{{ search[x][2] }}>
+                            <tr>
                                 <td>{{ search[x][0] }}</td>
                                 <td>{{ search[x][1] }}</td>
+                                {% if first == "Song" %}
                                 <td>
-                                    <button type="button" class="btn btn-default">
-                                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Save
+                                    <a href="/song_info/{{search[x][2]}}/">
+                                    <button type="button" class="btn btn-default btn-lg">
+                                        <span class="glyphicon glyphicon-info-sign"></span>
                                     </button>
+                                    </a>
                                 </td>
+                                {% elif first == "Album" %}
+                                <td>
+                                    <a href="/">
+                                    <button type="button" class="btn btn-default btn-lg">
+                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                    </button>
+                                    </a>
+                                </td>
+                                {% endif %}
+                                {% if log and filter %}
+                                <td>
+                                    <a href="/savef/{{search[x][2]}}/">
+                                    <button type="button" class="btn btn-default btn-lg">
+                                        <span class="glyphicon glyphicon-star"></span>
+                                    </button>
+                                    </a>
+                                </td>
+                                {% elif log %}
+                                <td>
+                                    <a href="/save/{{search[x][2]}}/">
+                                    <button type="button" class="btn btn-default btn-lg">
+                                        <span class="glyphicon glyphicon-star"></span>
+                                    </button>
+                                </a>
+                                </td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                             </tbody>

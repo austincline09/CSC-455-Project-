@@ -4,11 +4,23 @@
     <div class="container-fluid text-center">
         <div class="row content">
             <div class="col-sm-2 sidenav"></div>
-            <div class="col-sm-8 text-left">
+            <div class="col-sm-8 text-center">
+                <h1>Song Name: <b>{{ name }}</b></h1>
+                <hr>
+                <h3>By: <b>{{ artist }}</b></h3>
+                <h3>Album: <b>{{ album }}</b></h3>
+                <br>
+                <h4>Genre: <b>{{ genre }}</b></h4>
+                <h4>Song Length: <b>{{ length }}</b></h4>
+                <h4>Release Date: <b>{{ released }}</b></h4>
+                <br>
+                {% if lyric %}
+                <h4>Lyrics:</h4>
                 {% for lr in range(lyric|length) %}
                     {{ lyric[lr] }}
                     <br>
                 {% endfor %}
+                {% endif %}
             </div>
          </div>
      </div>

@@ -17,7 +17,7 @@ class insertDatabase:
             for i in range(len(stripValue)):
                 realValue = "(" + stripValue[i] + ")"
                 duh = ("INSERT INTO currentSearch values "+realValue)
-                print("made it")
+                # print("made it")
                 results.execute(duh)
                 b.commit()
                 i += 1

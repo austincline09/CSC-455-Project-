@@ -8,8 +8,40 @@ class CallDataBase:
                                  passwd='5BWYH6fXO',
                                  db='jtb9611')
 
-    def get_lyric(self):
-        lrc = self.b.cursor()
-        lrc.execute("Select Lyrics from lyrics where Song_ID=3001")
-        lrc_return = lrc.fetchall()
-        return lrc_return[0]
+    def get_lyric(self, song_id):
+        try:
+            song = self.b.cursor()
+            query = "select Lyrics from lyrics where Song_ID='" + song_id + "'"
+            song.execute(query)
+            lrc = song.fetchall()
+            return lrc[0]
+        except IndexError:
+            return "false"
+
+    def get_song_info(self, song_id):
+        song = self.b.cursor()
+        query = "select Song_Name, Song_Length, released from songs where Song_ID='"+song_id+"'"
+        song.execute(query)
+        song_info = song.fetchall()
+        return song_info
+
+    def get_album(self, song_id):
+        song = self.b.cursor()
+        query = "select Album_Name from songs natural join albums where Song_ID='" + song_id + "'"
+        song.execute(query)
+        album = song.fetchall()
+        return album[0][0]
+
+    def get_artist(self, song_id):
+        song = self.b.cursor()
+        query = "select Artist_Name from songs natural join artists where Song_ID='" + song_id + "'"
+        song.execute(query)
+        artist = song.fetchall()
+        return artist[0][0]
+
+    def get_genre(self, song_id):
+        song = self.b.cursor()
+        query = "select Genre_Name from songs natural join genres where Song_ID='" + song_id + "'"
+        song.execute(query)
+        genre = song.fetchall()
+        return genre[0][0]
