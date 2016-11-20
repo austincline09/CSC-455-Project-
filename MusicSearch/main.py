@@ -17,6 +17,8 @@ import song_info_db
 import CheckCS
 import userSaves
 import admin as a
+import updateUser
+import album_info_db
 # import spotifyRequests
 # end import statements
 
@@ -97,6 +99,30 @@ def set_user():
         login_response = current_app.make_response(redirect_to_user)
         login_response.set_cookie('msg', 'User name not found :(', max_age=5)
         return login_response
+
+
+@app.route('/change_username', methods=['POST', 'GET'])
+def change_username(msg=''):
+    return render_template('change_username.html', msg=msg)
+
+
+@app.route('/update_un', methods=['POST', 'GET'])
+def set_username():
+    redirect_to_login = redirect('/user/')
+    update_response = current_app.make_response(redirect_to_login)
+    if request.method == 'POST':
+        user_name = request.form['updateName']
+        print(user_name)
+    current_username = request.cookies.get('username')
+    update = updateUser.CallDataBase()
+    check_un = update.check_if_exists(user_name)
+    if len(check_un) == 1:
+        return change_username("Username already exists")
+    else:
+        update.update_user(current_username, user_name)
+        update_response.set_cookie('username', '', expires=0)
+        update_response.set_cookie('username', user_name)
+        return update_response
 
 
 # deletes user upon user request
@@ -327,7 +353,7 @@ def filter_result(show="false", album_id=0):
         label = 'award'
         value = award[0]
         print value
-        db.filter(label, value,albumOrsong)
+        db.filter(label, value, albumOrsong)
 
     if request.form.getlist('hours'):
         hours = request.form.getlist('hours')
@@ -354,7 +380,7 @@ def filter_result(show="false", album_id=0):
         if released_after == "":
             print("released_after filter is empty")
         else:
-            print released_after[0]
+            print released_after
 
     if request.form.getlist('released_before'):
         released_before = request.form.getlist('released_before')
@@ -362,7 +388,7 @@ def filter_result(show="false", album_id=0):
         if released_before == "":
             print("released_before filter is empty")
         else:
-            print released_before[0]
+            print released_before
 
     display = trial.displayCS(albumOrsong)
     # print(display)
@@ -385,7 +411,10 @@ def filter_result(show="false", album_id=0):
 def song_info(song_id):
     song = song_info_db.CallDataBase()
     song_infos = song.get_song_info(song_id)
-    album = song.get_album(song_id)
+    try:            # catches some problem on the backend
+        album = song.get_album(song_id)
+    except IndexError:
+        album = ''
     artist = song.get_artist(song_id)
     genre = song.get_genre(song_id)
     hours, remainder = divmod(song_infos[0][1].seconds, 3600)
@@ -403,6 +432,21 @@ def song_info(song_id):
     else:
         lyric = lyric[0].split('\n')
         return render_template('song_info.html', lyric=lyric, artist=artist, genre=genre, name=name, length=length, released=released, album=album)
+
+
+@app.route('/album_info/<album_id>/')
+def album_info(album_id):
+    print album_id
+    album = album_info_db.CallDataBase()
+    album_infos = album.get_album_info(album_id)
+    songs = album.get_album_songs(album_id)
+    artist = album.get_artist(album_id)
+    genre = album.get_genre(album_id)
+    name = album_infos[0][0]
+    length = album_infos[0][1]
+    release = album_infos[0][2]
+    return render_template('album_info.html', length=length, name=name, artist=artist, genre=genre, released=release, albumsongs=songs)
+
 
 @app.route('/save/<artist_id>/')
 def save_artist(artist_id):
