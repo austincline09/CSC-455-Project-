@@ -101,9 +101,14 @@
                                 </td>
                                 {% elif first == "Album" %}
                                 <td>
-                                    <a href="/show_songs/{{search[x][2]}}">
-                                    <button type="button" class="btn btn-default btn-lg">
-                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                    {% if log %}
+                                    <a href="/show_songsf/{{search[x][2]}}">
+                                        {% else %}
+                                        <a href="/show_songs/{{search[x][2]}}">
+                                            {% endif %}
+
+                                        <button type="button" class="btn btn-default btn-lg">
+                                        <span class="glyphicon glyphicon-arrow-down"></span>
                                     </button>
                                     </a>
                                 </td>
@@ -139,7 +144,7 @@
                         <table class="table table-hover" id="results_table">
                             <thead>
                                 <tr>
-                                    <th>Song</th>
+                                    <th>Songs in {{ albumname }} by {{ artistname }}</th>
                                 </tr>
                             </thead>
                             <tbody>

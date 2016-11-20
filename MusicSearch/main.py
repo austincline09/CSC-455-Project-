@@ -91,20 +91,24 @@ def set_user():
             return login_response
         else:
             login_response = current_app.make_response(redirect_to_user)
-            login_response.set_cookie('msg', 'User name not found :(', max_age=30)
+            login_response.set_cookie('msg', 'User name not found :(', max_age=5)
             return login_response
     except IndexError:
         login_response = current_app.make_response(redirect_to_user)
-        login_response.set_cookie('msg', 'User name not found :(', max_age=30)
+        login_response.set_cookie('msg', 'User name not found :(', max_age=5)
         return login_response
 
 
-# still need to implement delete
+# deletes user upon user request
 @app.route('/delete_user', methods=['POST', 'GET'])
 def delete_user():
     redirect_to_login = redirect('/user/')
     delete_response = current_app.make_response(redirect_to_login)
-    delete_response.set_cookie('userName', '', expires=0)
+    username = request.cookies.get('username')
+    # print username
+    delete = a.CallDataBase()
+    delete.delete_user(username)
+    delete_response.set_cookie('username', '', expires=0)
     delete_response.set_cookie('password', '', expires=0)
     return delete_response
 
@@ -134,12 +138,12 @@ def register_user():
     try:
         if getNewUser[0][0] == new_user_name:
             register_response = current_app.make_response(redirect_to_register)
-            register_response.set_cookie('msg', 'Bummer dude, this username is already taken.', max_age=30)
+            register_response.set_cookie('msg', 'Bummer dude, this username is already taken.', max_age=5)
             return register_response
     except IndexError:
         check.addUser()
         register_response = current_app.make_response(redirect_to_login)
-        register_response.set_cookie('msg', 'Radical, you created a new user', max_age=30)
+        register_response.set_cookie('msg', 'Radical, you created a new user', max_age=5)
         return register_response
 
 
@@ -212,8 +216,9 @@ def set_results():
 # need to implement the routes for the filters
 @app.route('/results', methods=['POST', 'GET'])
 def results(show="false", album_id=0):
-    print album_id
-    albumsongs = ''
+    albumsongs = ''         # needed if the first if loop does not run
+    album_name = ''
+    artist_name = ''
     first = request.cookies.get('first_cookie')
     second = request.cookies.get('second_cookie')
     third = request.cookies.get('third_cookie')
@@ -227,10 +232,14 @@ def results(show="false", album_id=0):
     award_names = db.getAwards()
     if album_id != 0:
         albumsongs = db.get_album_songs(album_id)
+        album_name = db.get_album_name(album_id)
+        album_name = album_name[0][0]
+        artist_name = db.get_artist_name_by_album(album_id)
+        artist_name = artist_name[0][0]
     if request.cookies.get('username'):
-        return render_template('results.html', albumsongs=albumsongs, show=show, genres=genres, awards=award_names, first=first, second=second, third=third, search=search_result, log="true")
+        return render_template('results.html', artistname=artist_name, albumname=album_name, albumsongs=albumsongs, show=show, genres=genres, awards=award_names, first=first, second=second, third=third, search=search_result, log="true")
     else:
-        return render_template('results.html', albumsongs=albumsongs,show=show, genres=genres, awards=award_names, first=first, second=second,
+        return render_template('results.html', artistname=artist_name, albumname=album_name, albumsongs=albumsongs,show=show, genres=genres, awards=award_names, first=first, second=second,
                                third=third, search=search_result)
 
 
@@ -240,6 +249,14 @@ def show_album_songs(album_id):
     search_text = current_app.make_response(redirect_to_results)
     search_text.set_cookie('show', album_id)
     return results("true", album_id)
+
+
+@app.route('/show_songsf/<album_id>', methods=['POST', 'GET'])
+def show_filter_album_songs(album_id):
+    redirect_to_results = redirect('/results')
+    search_text = current_app.make_response(redirect_to_results)
+    search_text.set_cookie('show', album_id)
+    return filter_result("true", album_id)
 
 
 # used for getting all songs or albums
@@ -283,7 +300,10 @@ def remove_user(username):
 
 # used for the filters on the results page
 @app.route('/filter', methods=['POST', 'GET'])
-def filter_result():
+def filter_result(show="false", album_id=0):
+    albumsongs = ''  # needed if the first if loop does not run
+    album_name = ''
+    artist_name = ''
     trial = CheckCS.check()
     albumOrsong = first_select  ##value song or album, passed from set_search_one
     first = request.cookies.get('first_cookie')
@@ -326,15 +346,37 @@ def filter_result():
             print("lyric filter is empty")
         else:
             # print("Im not empty")
-            db.filter(label,value,albumOrsong)
+            db.filter(label, value, albumOrsong)
+
+    if request.form.getlist('released_after'):
+        released_after = request.form.getlist('released_after')
+        released_after = released_after[0]
+        if released_after == "":
+            print("released_after filter is empty")
+        else:
+            print released_after[0]
+
+    if request.form.getlist('released_before'):
+        released_before = request.form.getlist('released_before')
+        released_before = released_before[0]
+        if released_before == "":
+            print("released_before filter is empty")
+        else:
+            print released_before[0]
 
     display = trial.displayCS(albumOrsong)
     # print(display)
+    if album_id != 0:
+        albumsongs = db.get_album_songs(album_id)
+        album_name = db.get_album_name(album_id)
+        album_name = album_name[0][0]
+        artist_name = db.get_artist_name_by_album(album_id)
+        artist_name = artist_name[0][0]
     if request.cookies.get('username'):
-        return render_template('results.html', genres=genres, awards=award_names, first=first, second=second,
+        return render_template('results.html', show=show, albumname=album_name, artistname=artist_name, albumsongs=albumsongs, genres=genres, awards=award_names, first=first, second=second,
                                third=third, search=display, log="true", filter="true")
     else:
-        return render_template('results.html', genres=genres, awards=award_names, first=first, second=second,
+        return render_template('results.html',show=show, albumname=album_name, artistname=artist_name, albumsongs=albumsongs, genres=genres, awards=award_names, first=first, second=second,
                                third=third, search=display, filter='true')
 
 

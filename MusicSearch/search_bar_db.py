@@ -106,6 +106,20 @@ class CallDataBase:
         songs = song.fetchall()
         return songs
 
+    def get_album_name(self, album_id):
+        album = self.b.cursor()
+        query = "select Album_Name from albums where Album_ID='" + album_id + "'"
+        album.execute(query)
+        album_name = album.fetchall()
+        return album_name
+
+    def get_artist_name_by_album(self, album_id):
+        artist = self.b.cursor()
+        query = "select Artist_Name from albums natural join artists where Album_ID='" + album_id + "'"
+        artist.execute(query)
+        artist_name = artist.fetchall()
+        return artist_name
+
 
 
 
