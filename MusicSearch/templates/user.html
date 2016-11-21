@@ -6,8 +6,12 @@
                 <div class="col-sm-2 sidenav">
                 </div>
                 <div class="col-sm-8 text-center">
-                    {% if msg %}
-                    <h3>{{ msg }}</h3>
+                    {% if msg == "Radical, you created a new user" %}
+                    <br>
+                    <div class="alert alert-success" role="alert">{{ msg }}</div>
+                    {% elif msg %}
+                    <br>
+                    <div class="alert alert-danger" role="alert">{{ msg }}</div>
                     {% endif %}
 
                     {% if admin %}

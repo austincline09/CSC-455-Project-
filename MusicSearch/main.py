@@ -93,11 +93,11 @@ def set_user():
             return login_response
         else:
             login_response = current_app.make_response(redirect_to_user)
-            login_response.set_cookie('msg', 'User name not found :(', max_age=5)
+            login_response.set_cookie('msg', 'User name or password not found :(', max_age=5)
             return login_response
     except IndexError:
         login_response = current_app.make_response(redirect_to_user)
-        login_response.set_cookie('msg', 'User name not found :(', max_age=5)
+        login_response.set_cookie('msg', 'User name or password not found :(', max_age=5)
         return login_response
 
 
@@ -156,13 +156,18 @@ def register_user():
     if request.method == 'POST':
         new_user_name = request.form['newUserName']
         new_password = request.form['newPassword']
+        print new_password
     redirect_to_login = redirect('/user/')
     redirect_to_register = redirect('/register/')
     check = login_db.CallDataBase(new_user_name, new_password)
     getNewUser = check.check_user()
     print getNewUser
     try:
-        if getNewUser[0][0] == new_user_name:
+        if new_password == '':
+            register_response = current_app.make_response(redirect_to_register)
+            register_response.set_cookie('msg', 'Bro...you did not enter a password.', max_age=5)
+            return register_response
+        elif getNewUser[0][0] == new_user_name:
             register_response = current_app.make_response(redirect_to_register)
             register_response.set_cookie('msg', 'Bummer dude, this username is already taken.', max_age=5)
             return register_response

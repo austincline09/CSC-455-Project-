@@ -6,7 +6,8 @@
             <div class="col-sm-2 sidenav"></div>
             <div class="col-sm-8 text-center">
                 {% if msg %}
-                <h3>{{ msg }}</h3>
+                <br>
+                <div class="alert alert-danger" role="alert">{{ msg }}</div>
                 {% endif %}
                 <form role="form" action="/new_user" method="POST">
                     <br>
