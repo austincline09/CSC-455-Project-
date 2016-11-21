@@ -9,7 +9,7 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE renderSortSong()
 BEGIN
-	select Song_Name, Artist_Name, Song_ID from songs,currentSearch,artists where songs.Song_ID = currentSearch.ID and songs.Artist_ID = artists.Artist_ID;
+	select Song_Name, Artist_Name,  from songs,currentSearch,artists where songs.Song_ID = currentSearch.ID and songs.Artist_ID = artists.Artist_ID;
 END $$
 DELIMITER ;
 
@@ -54,10 +54,39 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE renderSortAlbum()
 BEGIN
-	select Album_Name, Artist_Name, Album_ID from albums,currentSearch,artists where albums.Album_ID = currentSearch.ID and albums.Artist_ID = artists.Artist_ID;	
+	select Album_Name, Artist_Name from albums,currentSearch,artists where albums.Album_ID = currentSearch.ID and albums.Artist_ID = artists.Artist_ID;	
 END $$
 DELIMITER ;
 
+#######################################
+#extra quieries 
+#######################################
+DELIMITER $$
+CREATE FUNCTION oldOrnew (year smallint(11)) returns varchar(20)
+
+BEGIN
+	declare oldNew varchar(20);
+
+	IF year > '2000-01-01' THEN
+		SET oldNew = 'Modern';
+	ELSE
+		SET oldNew = 'Classic';
+	END IF;
+  RETURN (oldNew);
+END $$
+DELIMITER ;
+
+select Song_Name, oldOrnew(released) from songs;
+
+
+DELIMITER ///
+CREATE TRIGGER insertSavedSongs AFTER INSERT ON savedalbums 
+FOR EACH ROW
+BEGIN
+	insert into savedsongs select User_Name, Song_ID from songs natural join members where User_Name = @username and Album_ID = @album;
+
+END;///
+DELIMITER ;
 
 
 
