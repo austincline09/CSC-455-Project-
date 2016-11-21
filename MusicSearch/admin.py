@@ -23,3 +23,15 @@ class CallDataBase:
         query = ("DELETE FROM members WHERE User_Name='"+un+"'")
         use.execute(query)
         self.b.commit()
+
+    def users_saved_songs(self):
+        cursor = self.b.cursor()
+        cursor.execute("Select User_Name from savedsongs group by User_Name")
+        users_with_saves = cursor.fetchall()
+        return users_with_saves
+
+    def users_saved_albums(self):
+        cursor = self.b.cursor()
+        cursor.execute("Select User_Name from savedalbums group by User_Name")
+        users_with_saves = cursor.fetchall()
+        return users_with_saves

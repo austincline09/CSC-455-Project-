@@ -16,11 +16,24 @@ class CallDataBase:
         except MySQLdb.Error:
             self.b.rollback()
 
+    def set_things(self, un, album):
+        print "ran that shit"
+        print un
+        print album
+        s = self.b.cursor()
+        j = self.b.cursor()
+        s.execute("SET @username := '" + un + "'")
+        j.execute("SET @album := '" + album + "'")
+
     def save_album(self, un, album):
         try:
             add = self.b.cursor()
+            # self.set_things(un, album)
+            add.execute("SET @username := '" + un + "'")
+            add.execute("SET @album := '" + album + "'")
             add.execute("""INSERT INTO savedalbums VALUES (%s,%s)""", (un, album))
             self.b.commit()
+            add.close()
         except MySQLdb.Error:
             self.b.rollback()
 
@@ -69,3 +82,17 @@ class CallDataBase:
         except MySQLdb.error:
             self.b.rollback()
             print "user has no saved albums to delete"
+
+    def get_song_count(self, un):
+        count = self.b.cursor()
+        query = "select count(User_Name) from savedsongs where User_Name = '"+un+"'"
+        count.execute(query)
+        song_count = count.fetchall()
+        return song_count[0][0]
+
+    def get_album_count(self, un):
+        count = self.b.cursor()
+        query = "select count(User_Name) from savedalbums where User_Name = '" + un + "'"
+        count.execute(query)
+        album_count = count.fetchall()
+        return album_count[0][0]

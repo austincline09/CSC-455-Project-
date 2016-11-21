@@ -6,13 +6,14 @@
             <div class="col-sm-2 sidenav"></div>
             <div class="col-sm-8 text-left">
                 <h3>Your Saved Albums</h3>
+                <h4>Total: {{ albumcount }}</h4>
                 <hr>
                 <div id="results_div">
                     <div class="table-responsive">
                         <table class="table table-hover" id="results_table">
                             <thead>
                             <tr>
-                                <th>Album</th>
+                                <th>Album  Total: </th>
                                 <th>Artist</th>
                                 <th>Info</th>
                                 <th>Remove</th>
@@ -45,6 +46,7 @@
                 </div>
                 <br><br>
                 <h3>Your Saved Songs</h3>
+                <h4>Total: {{ songcount }}</h4>
                 <hr>
                 <div id="results_div_songs">
                     <div class="table-responsive">

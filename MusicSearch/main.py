@@ -313,8 +313,11 @@ def set_all():
 def admin():
     get = a.CallDataBase()
     all_users = get.get_users()
+    users_with_saves = get.users_saved_songs()
+    users_with_saves_albums = get.users_saved_albums()
     print all_users
-    return render_template('admin.html', users=all_users)
+    print users_with_saves
+    return render_template('admin.html', savealbums=users_with_saves_albums, savesongs=users_with_saves, users=all_users)
 
 
 @app.route('/remove_user/<username>')
@@ -417,6 +420,7 @@ def song_info(song_id):
         album = ''
     artist = song.get_artist(song_id)
     genre = song.get_genre(song_id)
+    old_new = song.get_old_or_new(song_id)
     hours, remainder = divmod(song_infos[0][1].seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
     name = song_infos[0][0]
@@ -427,11 +431,11 @@ def song_info(song_id):
     released = song_infos[0][2]
     lyric = song.get_lyric(song_id)
     if lyric == "false":
-        return render_template('song_info.html', artist=artist, genre=genre, name=name, length=length,
+        return render_template('song_info.html', oldnew=old_new, artist=artist, genre=genre, name=name, length=length,
                                released=released, album=album)
     else:
         lyric = lyric[0].split('\n')
-        return render_template('song_info.html', lyric=lyric, artist=artist, genre=genre, name=name, length=length, released=released, album=album)
+        return render_template('song_info.html', oldnew=old_new, lyric=lyric, artist=artist, genre=genre, name=name, length=length, released=released, album=album)
 
 
 @app.route('/album_info/<album_id>/')
@@ -498,7 +502,9 @@ def saved():
     save = userSaves.CallDataBase()
     songs = save.get_user_songs(username)
     albums = save.get_user_albums(username)
-    return render_template("saved.html", songs=songs, albums=albums)
+    song_count = save.get_song_count(username)
+    album_count = save.get_album_count(username)
+    return render_template("saved.html", albumcount=album_count, songcount=song_count, songs=songs, albums=albums)
 
 # if the app exists, run that junk
 if __name__ == "__main__":

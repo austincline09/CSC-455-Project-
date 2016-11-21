@@ -45,3 +45,10 @@ class CallDataBase:
         song.execute(query)
         genre = song.fetchall()
         return genre[0][0]
+
+    def get_old_or_new(self, song_id):
+        cursor = self.b.cursor()
+        query = "select oldOrnew(released) from songs where Song_ID='" + song_id + "'"
+        cursor.execute(query)
+        old_or_new = cursor.fetchall()
+        return old_or_new[0][0]
