@@ -33,6 +33,27 @@ BEGIN
 END $$
 DELIMITER ;
 
+DELIMITER $$
+CREATE PROCEDURE timeSortSong()
+BEGIN
+	select ID from currentSearch where ID in (select Song_ID from songs where STR_TO_DATE(Song_Length, '%H:%i:%s') <= @length);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE relAfterSortSong()
+BEGIN
+	select ID from currentSearch where ID in (select Song_ID from songs where released >= @after);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE relBeforeSortSong()
+BEGIN
+	select ID from currentSearch where ID in (select Song_ID from songs where released < @before);
+END $$
+DELIMITER ;
+
 #########################################
 #end of song quieres, start of album quieres
 ###########################################
@@ -57,6 +78,29 @@ BEGIN
 	select Album_Name, Artist_Name from albums,currentSearch,artists where albums.Album_ID = currentSearch.ID and albums.Artist_ID = artists.Artist_ID;	
 END $$
 DELIMITER ;
+
+
+DELIMITER $$
+CREATE PROCEDURE timeSortAlbum()
+BEGIN
+	select ID from currentSearch where ID in (select Album_ID from albums where STR_TO_DATE(Album_Length, '%H:%i:%s') <= @length);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE relAfterSortAlbum()
+BEGIN
+	select ID from currentSearch where ID in (select Album_ID from albums where released >= @AFTER);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE relBeforeSortAlbum()
+BEGIN
+	select ID from currentSearch where ID in (select Album_ID from albums where released < @before);
+END $$
+DELIMITER ;
+
 
 #######################################
 #extra quieries 
