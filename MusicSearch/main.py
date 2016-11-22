@@ -370,7 +370,10 @@ def filter_result(show="false", album_id=0):
         if request.form.getlist('seconds'):
             seconds = request.form.getlist('seconds')
             length = hours[0]+":"+minutes[0]+":"+seconds[0]
+            label = 'length'
             print length
+            value = length
+            db.filter(label, value, albumOrsong)
 
     if request.form.getlist('songLyric'):
         songLyric = request.form.getlist('songLyric')
@@ -389,6 +392,9 @@ def filter_result(show="false", album_id=0):
             print("released_after filter is empty")
         else:
             print released_after
+            value = released_after
+            label = 'after'
+            db.filter(label, value, albumOrsong)
 
     if request.form.getlist('released_before'):
         released_before = request.form.getlist('released_before')
@@ -397,6 +403,9 @@ def filter_result(show="false", album_id=0):
             print("released_before filter is empty")
         else:
             print released_before
+            value = released_before
+            label = 'before'
+            db.filter(label, value, albumOrsong)
 
     display = trial.displayCS(albumOrsong)
     # print(display)
