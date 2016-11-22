@@ -13,23 +13,15 @@
                             <thead>
                             <tr>
                                 <th>User</th>
-                                <th>Delete</th>
                                 <td>Has Saved Songs</td>
                                 <td>Has Saved Albums</td>
+                                <th>Delete</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for x in range(users|length) %}
                             <tr>
                                 <td>{{ users[x][0] }}</td>
-
-                                <td>
-                                    <a href="/remove_user/{{ users[x][0] }}">
-                                    <button type="button" class="btn btn-default btn-lg">
-                                        <span class="glyphicon glyphicon-remove-circle"></span>
-                                    </button>
-                                </a>
-                                </td>
                                 {% for y in range(savesongs|length) %}
                                 {% if users[x][0] == savesongs[y][0] %}
                                 <td>Yes</td>
@@ -41,6 +33,13 @@
                                 <td>Yes</td>
                                 {% endif %}
                                 {% endfor %}
+                                <td>
+                                    <a href="/remove_user/{{ users[x][0] }}">
+                                    <button type="button" class="btn btn-default btn-lg">
+                                        <span class="glyphicon glyphicon-remove-circle"></span>
+                                    </button>
+                                </a>
+                                </td>
                             </tr>
                             {% endfor %}
                             </tbody>

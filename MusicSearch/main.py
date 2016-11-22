@@ -320,8 +320,8 @@ def admin():
     all_users = get.get_users()
     users_with_saves = get.users_saved_songs()
     users_with_saves_albums = get.users_saved_albums()
-    print all_users
-    print users_with_saves
+    # print all_users
+    # print users_with_saves
     return render_template('admin.html', savealbums=users_with_saves_albums, savesongs=users_with_saves, users=all_users)
 
 
@@ -518,7 +518,15 @@ def saved():
     albums = save.get_user_albums(username)
     song_count = save.get_song_count(username)
     album_count = save.get_album_count(username)
-    return render_template("saved.html", albumcount=album_count, songcount=song_count, songs=songs, albums=albums)
+    all_saves = save.total_saved(username)
+    total = len(all_saves)
+    print total
+    return render_template("saved.html", total=total, albumcount=album_count, songcount=song_count, songs=songs, albums=albums)
+
+
+@app.route('/upgrade/')
+def upgrade():
+    return 'one day...'
 
 # if the app exists, run that junk
 if __name__ == "__main__":

@@ -35,10 +35,3 @@ class CallDataBase:
         cursor.execute("Select User_Name from savedalbums group by User_Name")
         users_with_saves = cursor.fetchall()
         return users_with_saves
-
-    '''
-    def total_saved(self):
-        cursor = self.b.cursor()
-        cursor.execute("select * from savedsongs WHERE User_Name='"+un+"' union select * from savedalbums where User_Name='"+un+"'")
-        users_with_saves = cursor.fetchall()
-        return users_with_saves'''
